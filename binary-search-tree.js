@@ -32,7 +32,9 @@ class Tree {
     }
 
     insert(value, root = this.root) { // If no root.leftChild or root.rightChild is passed in, this.root is used to begin insert() at the root of the BST.
-        if (this.root == null) { // If the BST is empty,
+        if (!value) {
+            return 'No value is entered.';
+        } else if (this.root == null) { // If the BST is empty,
             this.root = new Node(value); // Make value the root.
 
             return this.root;
@@ -46,22 +48,45 @@ class Tree {
             }
         }
 
-        return root;
+        return root; // This is put outside; otherwise, nothing will be returned when a duplicate value is entered.
+    }
+
+    find(value, root = this.root) {
+        if (!value) {
+            return 'No value is entered.';
+        } else if (this.root == null) { // If the BST is empty,
+            return 'The binary search tree is empty.';
+        } else if (root == null) { // If value is not found in the BST,
+            return 'The binary search tree does not contain the value.';
+        } else if (root.data == value) { // If value is found and equals root.data,
+            return root;
+        } else { // Go to root.leftChild or root.rightChild depending on value.
+            if (root.data > value) {
+                root = this.find(value, root.leftChild);
+            } else if (root.data < value) {
+                root = this.find(value, root.rightChild);
+            }
+
+            return root;
+        }
     }
 }
 
-const bst = new Tree([1, 2, 3, 4, 5, 6, 7]);
+/*const bst = new Tree([1, 2, 3, 4, 5, 6, 7]);
 console.log('tree 1', bst.root);
 
 const bst2 = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 console.log('tree 2', bst2.root);
 console.log('sub-left', bst2.root.leftChild);
-console.log('sub-right', bst2.root.rightChild);
+console.log('sub-right', bst2.root.rightChild);*/
 
 const bst3 = new Tree();
-console.log('tree 3', bst3.root);
+//console.log('tree 3', bst3.root);
 bst3.insert(2);
 bst3.insert(3);
 bst3.insert(4);
+bst3.insert(4);
 bst3.insert(1);
-console.log('tree 3 update', bst3.root);
+//console.log('tree 3 update', bst3.root);
+
+console.log(bst3.find(3));
