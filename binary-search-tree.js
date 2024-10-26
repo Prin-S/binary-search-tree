@@ -114,6 +114,36 @@ class Tree {
             return root;
         }
     }
+
+    levelOrder(callback) {
+        if (this.root == null) { // If the BST is empty,
+            return 'The binary search tree is empty.';
+        } else if (typeof callback != 'function') { // If callback is not a function,
+            throw new Error ('callback must be a function.');
+        } else {
+            const queue = [this.root]; // Insert the whole BST into queue.
+            const result = [];
+
+            while (queue.length > 0) {
+                const node = queue.shift(); // Get the first element of queue.
+                callback(node); // Call callback on node.
+                result.push(node.data); // Push the modified node.data into result.
+                
+                // The following conditionals push node.leftChild/node.rightChild into queue.
+                // This is done until there is no node.leftChild/node.rightChild left.
+                // Eventually, queue will be empty because a leaf node has no node.leftChild/node.rightChild.
+                if (node.leftChild) {
+                    queue.push(node.leftChild);
+                }
+
+                if (node.rightChild) {
+                    queue.push(node.rightChild);
+                }
+            }
+
+            return result;
+        }
+    }
 }
 
 /*const bst = new Tree([1, 2, 3, 4, 5, 6, 7]);
@@ -125,7 +155,8 @@ console.log('sub-left', bst2.root.leftChild);
 console.log('sub-right', bst2.root.rightChild);*/
 
 const bst3 = new Tree();
-console.log('tree 3', bst3.root);
+console.log('tree 3 after levelOrder', bst3.levelOrder(timesTwo));
+//console.log('tree 3', bst3.root);
 bst3.insert(4);
 bst3.insert(7);
 bst3.insert(2);
@@ -134,9 +165,16 @@ bst3.insert(6);
 bst3.insert(5);
 bst3.insert(3);
 bst3.insert(8);
-console.log('tree 3 after insert', bst3.root);
+//console.log('tree 3 after insert', bst3.root);
 
 bst3.deleteItem(4);
-console.log('tree 3 after delete', bst3.root);
+//console.log('tree 3 after delete', bst3.root);
 
-console.log(bst3.find(7));
+//console.log(bst3.find(7));
+
+function timesTwo(node) {
+    node.data = node.data * 2;
+}
+
+console.log('tree 3 after levelOrder', bst3.levelOrder(timesTwo));
+console.log('tree 3 after levelOrder', bst3.levelOrder('timesTwo'));
