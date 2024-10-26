@@ -152,7 +152,7 @@ class Tree {
         } else {
             const result = this.inOrderTraverse(callback, node, []); // The empty array is for storing the modified node.data returned from callback.
         
-            return result;   
+            return result;
         }
     }
 
@@ -163,6 +163,54 @@ class Tree {
             this.inOrderTraverse(callback, node.leftChild, result); // Go to the deepest node.leftChild.
             result.push(callback(node.data)); // Call callback on node.data and then push the modified node.data into result.
             this.inOrderTraverse(callback, node.rightChild, result); // Go to the deepest node.rightChild.
+
+            return result;
+        }
+    }
+
+    preOrder(callback, node = this.root) {
+        if (this.root == null) { // If the BST is empty,
+            return 'The binary search tree is empty.';
+        } else if (typeof callback != 'function') { // If callback is not a function,
+            throw new Error ('callback must be a function.');
+        } else {
+            const result = this.preOrderTraverse(callback, node, []); // The empty array is for storing the modified node.data returned from callback.
+        
+            return result;
+        }
+    }
+
+    preOrderTraverse(callback, node, result) {
+        if (node == null) { // Base case
+            return null;
+        } else {
+            result.push(callback(node.data)); // Call callback on node.data and then push the modified node.data into result.
+            this.preOrderTraverse(callback, node.leftChild, result); // Go to the deepest node.leftChild.
+            this.preOrderTraverse(callback, node.rightChild, result); // Go to the deepest node.rightChild.
+
+            return result;
+        }
+    }
+
+    postOrder(callback, node = this.root) {
+        if (this.root == null) { // If the BST is empty,
+            return 'The binary search tree is empty.';
+        } else if (typeof callback != 'function') { // If callback is not a function,
+            throw new Error ('callback must be a function.');
+        } else {
+            const result = this.postOrderTraverse(callback, node, []); // The empty array is for storing the modified node.data returned from callback.
+        
+            return result;
+        }
+    }
+
+    postOrderTraverse(callback, node, result) {
+        if (node == null) { // Base case
+            return null;
+        } else {
+            this.postOrderTraverse(callback, node.leftChild, result); // Go to the deepest node.leftChild.
+            this.postOrderTraverse(callback, node.rightChild, result); // Go to the deepest node.rightChild.
+            result.push(callback(node.data)); // Call callback on node.data and then push the modified node.data into result.
 
             return result;
         }
@@ -204,4 +252,8 @@ console.log('tree 3 after levelOrder', bst3.levelOrder(timesTwo));
 //console.log('tree 3 after levelOrder', bst3.levelOrder('timesTwo'));
 
 console.log('tree 3 after inOrder', bst3.inOrder(timesTwo));
-console.log('tree 3 after inOrder', bst3.inOrder('timesTwo'));
+//console.log('tree 3 after inOrder', bst3.inOrder('timesTwo'));
+
+console.log('tree 3 after preOrder', bst3.preOrder(timesTwo));
+
+console.log('tree 3 after preOrder', bst3.postOrder(timesTwo));
