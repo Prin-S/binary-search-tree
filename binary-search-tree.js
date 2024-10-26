@@ -72,7 +72,7 @@ class Tree {
             }
 
             return root;
-        } else { // Go to root.leftChild or root.rightChild depending on value.
+        } else { // If value is found but does not equal root.data, go to root.leftChild or root.rightChild depending on value.
             if (value < root.data) {
                 root.leftChild = this.deleteItem(value, root.leftChild);
             } else if (value > root.data) {
@@ -92,7 +92,7 @@ class Tree {
             counter = this.findLowestInRightChild(root.leftChild, counter);
         }
 
-        return counter;
+        return counter; // In the end, counter will be the lowest value in root.rightChild.
     }
 
     find(value, root = this.root) {
@@ -126,8 +126,7 @@ class Tree {
 
             while (queue.length > 0) {
                 const node = queue.shift(); // Get the first element of queue.
-                callback(node); // Call callback on node.
-                result.push(node.data); // Push the modified node.data into result.
+                result.push(callback(node.data)); // Call callback on node.data and then push the modified node.data into result.
                 
                 // The following conditionals push node.leftChild/node.rightChild into queue.
                 // This is done until there is no node.leftChild/node.rightChild left.
@@ -144,6 +143,30 @@ class Tree {
             return result;
         }
     }
+
+    inOrder(callback, node = this.root) {
+        if (this.root == null) { // If the BST is empty,
+            return 'The binary search tree is empty.';
+        } else if (typeof callback != 'function') { // If callback is not a function,
+            throw new Error ('callback must be a function.');
+        } else {
+            const result = this.inOrderTraverse(callback, node, []); // The empty array is for storing the modified node.data returned from callback.
+        
+            return result;   
+        }
+    }
+
+    inOrderTraverse(callback, node, result) {
+        if (node == null) { // Base case
+            return null;
+        } else {
+            this.inOrderTraverse(callback, node.leftChild, result); // Go to the deepest node.leftChild.
+            result.push(callback(node.data)); // Call callback on node.data and then push the modified node.data into result.
+            this.inOrderTraverse(callback, node.rightChild, result); // Go to the deepest node.rightChild.
+
+            return result;
+        }
+    }
 }
 
 /*const bst = new Tree([1, 2, 3, 4, 5, 6, 7]);
@@ -156,6 +179,7 @@ console.log('sub-right', bst2.root.rightChild);*/
 
 const bst3 = new Tree();
 console.log('tree 3 after levelOrder', bst3.levelOrder(timesTwo));
+console.log('tree 3 after inOrder', bst3.inOrder(timesTwo));
 //console.log('tree 3', bst3.root);
 bst3.insert(4);
 bst3.insert(7);
@@ -168,13 +192,16 @@ bst3.insert(8);
 //console.log('tree 3 after insert', bst3.root);
 
 bst3.deleteItem(4);
-//console.log('tree 3 after delete', bst3.root);
+console.log('tree 3 after delete', bst3.root);
 
 //console.log(bst3.find(7));
 
-function timesTwo(node) {
-    node.data = node.data * 2;
+function timesTwo(nodeData) {
+    return nodeData * 2;
 }
 
 console.log('tree 3 after levelOrder', bst3.levelOrder(timesTwo));
-console.log('tree 3 after levelOrder', bst3.levelOrder('timesTwo'));
+//console.log('tree 3 after levelOrder', bst3.levelOrder('timesTwo'));
+
+console.log('tree 3 after inOrder', bst3.inOrder(timesTwo));
+console.log('tree 3 after inOrder', bst3.inOrder('timesTwo'));
