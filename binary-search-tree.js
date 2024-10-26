@@ -215,6 +215,18 @@ class Tree {
             return result;
         }
     }
+
+    height(node = this.root) {
+        if (node == null) { // Base case
+            return -1; // The edges (not the nodes/vertices) are counted (https://stackoverflow.com/a/2597754).
+        }
+        
+        // Recurse until a leaf node is found.
+        const left = this.height(node.leftChild);
+        const right = this.height(node.leftChild); 
+
+        return Math.max(left, right) + 1; // Get the higher number between the left and right subtrees. Then, add 1 to it.
+    }
 }
 
 /*const bst = new Tree([1, 2, 3, 4, 5, 6, 7]);
@@ -226,8 +238,8 @@ console.log('sub-left', bst2.root.leftChild);
 console.log('sub-right', bst2.root.rightChild);*/
 
 const bst3 = new Tree();
-console.log('tree 3 after levelOrder', bst3.levelOrder(timesTwo));
-console.log('tree 3 after inOrder', bst3.inOrder(timesTwo));
+//console.log('tree 3 after levelOrder', bst3.levelOrder(timesTwo));
+//console.log('tree 3 after inOrder', bst3.inOrder(timesTwo));
 //console.log('tree 3', bst3.root);
 bst3.insert(4);
 bst3.insert(7);
@@ -257,3 +269,5 @@ console.log('tree 3 after inOrder', bst3.inOrder(timesTwo));
 console.log('tree 3 after preOrder', bst3.preOrder(timesTwo));
 
 console.log('tree 3 after preOrder', bst3.postOrder(timesTwo));
+
+console.log('height', bst3.height());
