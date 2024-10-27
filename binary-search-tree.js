@@ -227,13 +227,13 @@ class Tree {
     heightCheck(node) {
         if (node == null) { // Base case
             return -1; // The edges (not the nodes/vertices) are counted (https://stackoverflow.com/a/2597754).
-        }
-        
-        // Recurse until a leaf node is found.
-        const left = this.heightCheck(node.leftChild);
-        const right = this.heightCheck(node.rightChild); 
+        } else {
+            // Recurse until a leaf node is found.
+            const left = this.heightCheck(node.leftChild);
+            const right = this.heightCheck(node.rightChild);
 
-        return Math.max(left, right) + 1; // Get the higher number between the left and right subtrees. Then, add 1 to it.
+            return Math.max(left, right) + 1; // Get the higher number between the left and right subtrees. Then, add 1 to it.
+        }
     }
 
     depth(node) {
@@ -241,6 +241,24 @@ class Tree {
         const nodeHeight = this.height(node);
 
         return rootHeight - nodeHeight;
+    }
+
+    isBalanced(node = this.root) {
+        if (node == null) { // Base case - return true when a leaf node is reached.
+            return true;
+        } else {
+            // Recurse until a leaf node is found.
+            const left = this.height(node.leftChild);
+            const right = this.height(node.rightChild); 
+
+            // The absolute height difference between node.leftChild and node.rightChild must be no more than 1.
+            // The lower-level node.leftChild and node.rightChild must be balanced too.
+            if (Math.abs(left - right) <= 1 && this.isBalanced(node.leftChild) && this.isBalanced(node.rightChild)) {
+                return true;
+            } else {
+                return false; // The BST is not balanced.
+            }
+        }
     }
 }
 
@@ -265,6 +283,7 @@ bst3.insert(5);
 bst3.insert(3);
 bst3.insert(8);
 bst3.insert(10);
+bst3.insert(12);
 //console.log('tree 3 after insert', bst3.root);
 
 bst3.deleteItem(4);
@@ -290,3 +309,5 @@ console.log('tree 3 after preOrder', bst3.postOrder(timesTwo));
 console.log('height', bst3.height(subtree1));
 
 console.log('depth', bst3.depth(subtree1));
+
+console.log('balanced?', bst3.isBalanced());
