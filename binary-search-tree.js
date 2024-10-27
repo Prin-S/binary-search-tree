@@ -235,6 +235,13 @@ class Tree {
 
         return Math.max(left, right) + 1; // Get the higher number between the left and right subtrees. Then, add 1 to it.
     }
+
+    depth(node) {
+        const rootHeight = this.height(this.root);
+        const nodeHeight = this.height(node);
+
+        return rootHeight - nodeHeight;
+    }
 }
 
 /*const bst = new Tree([1, 2, 3, 4, 5, 6, 7]);
@@ -263,7 +270,8 @@ bst3.insert(10);
 bst3.deleteItem(4);
 console.log('tree 3 after delete', bst3.root);
 
-//console.log(bst3.find(7));
+const subtree1 = bst3.find(7);
+const subtree2 = bst3.find(8);
 
 function timesTwo(nodeData) {
     return nodeData * 2;
@@ -279,4 +287,6 @@ console.log('tree 3 after preOrder', bst3.preOrder(timesTwo));
 
 console.log('tree 3 after preOrder', bst3.postOrder(timesTwo));
 
-console.log('height', bst3.height(bst3.root));
+console.log('height', bst3.height(subtree1));
+
+console.log('depth', bst3.depth(subtree1));
