@@ -223,7 +223,7 @@ class Tree {
         
         // Recurse until a leaf node is found.
         const left = this.height(node.leftChild);
-        const right = this.height(node.leftChild); 
+        const right = this.height(node.rightChild); 
 
         return Math.max(left, right) + 1; // Get the higher number between the left and right subtrees. Then, add 1 to it.
     }
