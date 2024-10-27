@@ -216,14 +216,22 @@ class Tree {
         }
     }
 
-    height(node = this.root) {
+    height(node) {
+        if (!node || !node instanceof Node) { // If node is not entered or not from the Node class,
+            return 0;
+        } else {
+            return this.heightCheck(node);
+        }
+    }
+
+    heightCheck(node) {
         if (node == null) { // Base case
             return -1; // The edges (not the nodes/vertices) are counted (https://stackoverflow.com/a/2597754).
         }
         
         // Recurse until a leaf node is found.
-        const left = this.height(node.leftChild);
-        const right = this.height(node.rightChild); 
+        const left = this.heightCheck(node.leftChild);
+        const right = this.heightCheck(node.rightChild); 
 
         return Math.max(left, right) + 1; // Get the higher number between the left and right subtrees. Then, add 1 to it.
     }
@@ -249,6 +257,7 @@ bst3.insert(6);
 bst3.insert(5);
 bst3.insert(3);
 bst3.insert(8);
+bst3.insert(10);
 //console.log('tree 3 after insert', bst3.root);
 
 bst3.deleteItem(4);
@@ -270,4 +279,4 @@ console.log('tree 3 after preOrder', bst3.preOrder(timesTwo));
 
 console.log('tree 3 after preOrder', bst3.postOrder(timesTwo));
 
-console.log('height', bst3.height());
+console.log('height', bst3.height(bst3.root));
