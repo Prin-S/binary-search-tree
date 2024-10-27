@@ -11,10 +11,14 @@ class Tree {
         if (!arr) { // This is so that new Tree() works when nothing is passed in.
             this.root = null;
         } else {
-            arr.sort((a, b) => a - b); // Sort values from lowest to highest.
-            arr = [...new Set(arr)]; // Remove duplicate values.
-            this.root = this.buildTree(arr, 0, arr.length - 1); // Arguments: array, start value, end value (arr.length - 1 because array starts at index 0)
+            this.preBuildTree(arr);
         }
+    }
+
+    preBuildTree(arr) {
+        arr.sort((a, b) => a - b); // Sort values from lowest to highest.
+        arr = [...new Set(arr)]; // Remove duplicate values.
+        this.root = this.buildTree(arr, 0, arr.length - 1); // Arguments: array, start value, end value (arr.length - 1 because array starts at index 0)
     }
 
     buildTree(arr, start, end) {
@@ -260,6 +264,17 @@ class Tree {
             }
         }
     }
+
+    rebalance() {
+        if (!this.isBalanced()) {
+            const newArr = this.levelOrder(node => node); // Create a new array with all values using level-order traversal. The callback function does nothing to the values.
+            this.preBuildTree(newArr);
+
+            return this.root;
+        } else {
+            return 'The binary search tree is already balanced.';
+        }
+    }
 }
 
 /*const bst = new Tree([1, 2, 3, 4, 5, 6, 7]);
@@ -309,5 +324,9 @@ console.log('tree 3 after preOrder', bst3.postOrder(timesTwo));
 console.log('height', bst3.height(subtree1));
 
 console.log('depth', bst3.depth(subtree1));
+
+console.log('balanced?', bst3.isBalanced());
+
+console.log(bst3.rebalance());
 
 console.log('balanced?', bst3.isBalanced());
